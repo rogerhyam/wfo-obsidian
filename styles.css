@@ -6,3 +6,27 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+
+.inline-title{
+    font-size: 70%;
+    color: blue;
+ }
+
+ .add-taxon-input{
+    width: 100%;
+ }
+
+ .add-taxon-list{
+    height: 20em;
+    overflow-y: scroll;
+ }
+
+ .add-taxon-list-item{
+    margin-top: 0.4em;
+    border-top: solid lightgray 1px;  
+    padding-top: 0.4em;      
+ }
+
+ .add-taxon-list-strong{
+    font-weight: bold;
+ }

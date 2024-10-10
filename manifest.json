@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
+	"id": "wfo-obsidian",
+	"name": "WFO Pages",
+	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Maintain a set of species pages based on the taxonomy in the World Flora Online",
+	"author": "Roger Hyam",
+	"authorUrl": "https://list.worldfloraonline.org",
 	"isDesktopOnly": false
 }
