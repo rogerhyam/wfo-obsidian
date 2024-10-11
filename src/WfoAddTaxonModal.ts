@@ -53,36 +53,47 @@ export class WfoAddTaxonModal extends Modal {
 			// this is a callback 
 			notice.hide();
 			const li = this.taxonList.createDiv('add-taxon-list-item');
+			let acceptedDiv: HTMLDivElement | boolean;  
 			if(name.currentPreferredUsage){
 				// name is placed
 				if(name.id == name.currentPreferredUsage.hasName.id){
 					// accepted name
-					const s = li.createEl('strong');
-					s.innerHTML = name.fullNameStringHtml;
+					acceptedDiv = li.createDiv('add-taxon-list-strong');
+					acceptedDiv.innerHTML = name.currentPreferredUsage.hasName.fullNameStringHtml + ' ';
 				}else{
 					
 					// synonym
-					const s = li.createEl('span');
-					s.innerHTML = name.fullNameStringHtml;
+					li.createDiv().innerHTML = name.fullNameStringHtml;
 					
 					// add in accepted
-					li.createDiv('add-taxon-list-strong').innerHTML = name.currentPreferredUsage.hasName.fullNameStringHtml;
+					acceptedDiv = li.createDiv('add-taxon-list-strong');
+					acceptedDiv.innerHTML = 'Accepted: ' + name.currentPreferredUsage.hasName.fullNameStringHtml + ' ';
 				}
 			}else{
 				// name is unplaced
-				li.createDiv().innerHTML = name.fullNameStringHtml;
-				li.createDiv('add-taxon-list-strong').textContent = ' Unplaced name';
+				li.createDiv().innerHTML = name.fullNameStringHtml + ' [Unplaced] ';
+				acceptedDiv = false;
 			}
-			li.setAttr('wfo-id', name.id);
-			li.addEventListener('click', (e: Event) => {this.taxonSelected((<HTMLElement>e.target).getAttr('wfo-id')); console.log(e)});	
+
+			if(acceptedDiv){
+
+				const addLink = acceptedDiv.createEl('button');
+				addLink.setText('Add');
+				addLink.setAttr('wfo-id', name.id);
+				addLink.setAttr('title', 'Add this to the vault');
+				addLink.addEventListener('click', (e: Event) => {this.taxonSelected((<HTMLElement>e.target).getAttr('wfo-id'));});
+				
+			}
+			
 		
 		});
 
 	}
 
 	taxonSelected(wfoId: string | null){
-		//if(!wfoId) return;
-		alert(wfoId);
+		if(!wfoId) return;
+		// let's go create.
+		this.plugin.wfoPagesVault.addUpdatePage(wfoId);
 	}
 
 	onClose() {

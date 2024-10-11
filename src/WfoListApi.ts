@@ -29,6 +29,7 @@ export class WfoListApi{
                             id
                             fullNameStringHtml
                         }
+                        partsCount
                     }
                 }
             }`;
@@ -55,8 +56,45 @@ export class WfoListApi{
 
     }
 
+    fetchTaxon(wfoId: string,  callback:(n: WfoTaxon)=> void){
+
+
+        // qualifiy the version of the taxon we are getting
+        const taxonId = wfoId + '-' +this.plugin.settings.classificationVersion;
+        
+        let q = `query{
+            taxonConceptById(taxonId: \"${taxonId}\"){
+                id
+                hasName{
+                    id
+                    fullNameStringHtml
+                }
+            }
+        }`;
+
+        // run a query
+        fetch(this.plugin.settings.apiUrl, {
+            method: "POST",
+            headers: {},
+            body: JSON.stringify({ query: q }),
+        })
+            .then(r => r.json())
+            .then(data => {
+                if(data && data.data && data.data.taxonConceptById){
+                    callback(data.data.taxonConceptById);
+                }else{
+                    console.log('Failed to find names');
+                    console.log(data);
+                }
+
+            })
+
+
+    }
 
 }
+
+
 
 /*
     A set of interfaces that describe the data returned by a json call
@@ -74,4 +112,5 @@ export interface WfoTaxon{
     hasSynonym: WfoName[];
     hasPart: WfoTaxon[];
     isPartOf: WfoTaxon[]; 
+    partsCount: number;
 }
