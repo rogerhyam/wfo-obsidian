@@ -26,6 +26,9 @@ export default class WfoPlugin extends Plugin {
 			}
 		});
 
+		// checkCallback:
+
+
 		// same things as a menu items
 		this.addRibbonIcon("leaf", "WFO Pages", (event) => {
 			const menu = new Menu();
@@ -33,11 +36,23 @@ export default class WfoPlugin extends Plugin {
 			menu.addItem((item) =>
 			  item
 				.setTitle("Add a taxon page")
-				.setIcon("documents")
+				.setIcon("document")
 				.onClick(() => {
 					new WfoAddTaxonModal(this).open();
 				})
 			);
+
+			menu.addItem((item) =>
+				item
+				  .setTitle("Update taxon page (cached)")
+				  .setIcon("documents")
+				  .setDisabled(this.wfoPagesVault.getCurrentTaxonWfoId().length == 0)
+				  .onClick(() => {
+						const wfoId = this.wfoPagesVault.getCurrentTaxonWfoId();
+						this.wfoPagesVault.addUpdatePage(wfoId);
+						this.wfoPagesVault.focusOnTaxon(wfoId);
+				  })
+			  );
 	  
 			menu.showAtMouseEvent(event);
 		  });

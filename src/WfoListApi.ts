@@ -66,11 +66,31 @@ export class WfoListApi{
             taxonConceptById(taxonId: \"${taxonId}\"){
                 id
                 hasName{
+                    ...NameParts    
+                }
+                hasSynonym{
+                    ...NameParts
+                }
+                path{
                     id
-                    fullNameStringHtml
+                    hasName{
+                        ...NameParts
+                    }
+                }
+                hasPart{
+                    id
+                    hasName{
+                        ...NameParts
+                    }
                 }
             }
-        }`;
+        }
+        fragment NameParts on TaxonName {
+            id
+            fullNameStringHtml
+        }    
+        
+        `;
 
         // run a query
         fetch(this.plugin.settings.apiUrl, {
@@ -103,14 +123,26 @@ export class WfoListApi{
 export interface WfoName {
     id: string;
     fullNameStringHtml: string;
+    fullNameStringPlain: string;
     currentPreferredUsage: WfoTaxon | null;
 }
 
 export interface WfoTaxon{
     id: string;
     hasName: WfoName;
+    path: WfoTaxon[];
     hasSynonym: WfoName[];
     hasPart: WfoTaxon[];
     isPartOf: WfoTaxon[]; 
     partsCount: number;
+}
+
+/*
+    just enough to render a link
+*/
+export interface WfoTaxonStub{
+    id: string;
+    taxonId: string;
+    fullNameStringHtml: string;
+    fullNameStringPlain: string;
 }

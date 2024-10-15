@@ -94,6 +94,7 @@ export class WfoAddTaxonModal extends Modal {
 		if(!wfoId) return;
 		// let's go create.
 		this.plugin.wfoPagesVault.addUpdatePage(wfoId);
+		this.plugin.wfoPagesVault.focusOnTaxon(wfoId);
 	}
 
 	onClose() {
